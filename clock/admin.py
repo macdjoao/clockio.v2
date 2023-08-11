@@ -1,3 +1,7 @@
 from django.contrib import admin
+from clock.models import Clock
 
-# Register your models here.
+
+@admin.register(Clock)
+class ClockAdmin(admin.ModelAdmin):
+    ...
