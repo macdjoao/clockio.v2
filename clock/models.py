@@ -8,7 +8,7 @@ class Clock(models.Model):
     employee = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     entry_date = models.DateTimeField()
     out_date = models.DateTimeField()
-    description = models.TextField()
+    description = models.TextField(null=True)
     to_correction = models.BooleanField(default=False)
 
     class Meta:
