@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from clock.models import Clock
 from clock.serializers import ClockOutSerializer
 from rest_framework.status import HTTP_200_OK
@@ -17,8 +18,10 @@ class ClockService:
             return Response(serializer.data, status=HTTP_200_OK)
         return Response({'detail': 'Empty'}, status=HTTP_200_OK)
 
-    def read_one(self):
-        pass
+    def read_one(self, id: int):
+        clock = get_object_or_404(Clock, id=id)
+        serializer = ClockOutSerializer(instance=clock)
+        return Response(serializer.data, status=HTTP_200_OK)
 
     def update(self):
         pass
