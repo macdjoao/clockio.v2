@@ -4,13 +4,15 @@ from clock.models import Clock
 from clock.serializers import ClockOutSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.status import HTTP_200_OK
+from clock.services import ClockService
+
+
+service = ClockService()
 
 
 @api_view()
 def clocks(request):
-    clocks = Clock.objects.all()
-    serializer = ClockOutSerializer(instance=clocks, many=True)
-    return Response(serializer.data, status=HTTP_200_OK)
+    return service.read_list()
 
 
 @api_view()
