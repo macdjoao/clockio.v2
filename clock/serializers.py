@@ -1,18 +1,20 @@
 from rest_framework import serializers
 from clock.models import Clock
 # from django.contrib.auth.models import User
-# from employees.serializers import EmployeeOutSerializer
+from employees.serializers import EmployeeOutSerializer
 
 
 class ClockOutSerializer(serializers.ModelSerializer):
+    employee = EmployeeOutSerializer()
+
     class Meta:
         model = Clock
         fields = ['id',
-                  'employee_id',
                   'entry_date',
                   'out_date',
                   'description',
                   'to_correction',
+                  'employee',
                   'updated_at',
                   'created_at']
 
