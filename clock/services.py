@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from clock.models import Clock
-from clock.serializers import ClockOutSerializer
-from rest_framework.status import HTTP_200_OK
+from clock.serializers import ClockInSerializer, ClockOutSerializer
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.response import Response
 
 
@@ -9,8 +9,11 @@ class ClockService:
     def __init__(self) -> None:
         self.queryset = Clock.objects.all()
 
-    def create(self):
-        pass
+    def create(self, data: dict):
+        serializer = ClockInSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'detail': 'Clock successfully created'}, status=HTTP_201_CREATED)
 
     def read_list(self):
         if self.queryset:
