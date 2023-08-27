@@ -1,20 +1,23 @@
 from rest_framework.decorators import api_view
 from clock.services import ClockService
-from rest_framework.parsers import JSONParser
+from rest_framework.response import Response
 
 service = ClockService()
 
 
-@api_view()
+@api_view(['GET'])
 def clocks(request):
-    return service.read_list()
+    if request.method == 'GET':
+        return service.read_list()
 
 
-# TODO: Method POST Not Allowed
-@api_view(http_method_names=['GET', 'POST', 'PATCH', 'DELETE'])
-def clock(request, id: int = None):
+@api_view(['GET', 'POST', 'PATCH', 'DELETE'])
+def clock(request, id: int):
     if request.method == 'GET':
         return service.read_one(id=id)
     if request.method == 'POST':
-        data = JSONParser().parse(request)
-        return service.create(data=data)
+        return Response({'method': 'post'})
+    if request.method == 'PATCH':
+        return Response({'method': 'patch'})
+    if request.method == 'DELETE':
+        return Response({'method': 'delete'})
