@@ -10,7 +10,7 @@ class ClockService:
         self.queryset = Clock.objects.all()
 
     # TODO
-    def create_clock(self, data: dict):
+    def create(self, data: dict):
         serializer = ClockInSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
