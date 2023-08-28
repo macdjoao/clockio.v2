@@ -1,23 +1,40 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from clock.services import ClockService
+from clock.models import Clock
+from clock.serializers import ClockInSerializer, ClockOutSerializer
 from rest_framework.response import Response
-
-service = ClockService()
+from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
 
 
 @api_view(['GET'])
-def clocks(request):
-    if request.method == 'GET':
-        return service.read_list()
+def get_clocks(request):
+    queryset = Clock.objects.all()
+    if queryset:
+        serializer = ClockOutSerializer(instance=queryset, many=True)
+        return Response(serializer.data, status=HTTP_200_OK)
+    return Response({'detail': 'Empty'}, status=HTTP_200_OK)
 
 
-@api_view(['GET', 'POST', 'PATCH', 'DELETE'])
-def clock(request, id: int):
-    if request.method == 'GET':
-        return service.read_one(id=id)
-    if request.method == 'POST':
-        return Response({'method': 'post'})
-    if request.method == 'PATCH':
-        return Response({'method': 'patch'})
-    if request.method == 'DELETE':
-        return Response({'method': 'delete'})
+@api_view(['GET'])
+def get_clock(request, id: int):
+    clock = get_object_or_404(Clock, id=id)
+    serializer = ClockOutSerializer(instance=clock)
+    return Response(serializer.data, status=HTTP_200_OK)
+
+
+@api_view(['POST'])
+def post_clock(request):
+    serializer = ClockInSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response({'detail': 'Clock successfully created'}, status=HTTP_201_CREATED)
+
+
+@api_view(['PATCH'])
+def update_clock(request, id: int):
+    return Response({'method': 'patch'})
+
+
+@api_view(['DELETE'])
+def delete_clock(request, id: int):
+    return Response({'method': 'delete'})
