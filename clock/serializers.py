@@ -32,3 +32,6 @@ class ClockInSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'out_date must occur after entry_date')
         return data
+
+    def create(self, validated_data):
+        return Clock.objects.create(**validated_data)
