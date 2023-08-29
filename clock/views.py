@@ -1,18 +1,17 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework.decorators import api_view
-from clock.models import Clock
-from clock.serializers import ClockInSerializer, ClockOutSerializer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_200_OK
+
+from clock.models import Clock
+from clock.serializers import ClockOutSerializer, ClockInSerializer
 
 
 @api_view(['GET'])
 def get_clocks(request):
-    queryset = Clock.objects.all()
-    if queryset:
-        serializer = ClockOutSerializer(instance=queryset, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
-    return Response({'detail': 'Empty'}, status=HTTP_200_OK)
+    clocks = get_list_or_404(Clock)
+    serializer = ClockOutSerializer(instance=clocks, many=True)
+    return Response(serializer.data, status=HTTP_200_OK)
 
 
 @api_view(['GET'])
