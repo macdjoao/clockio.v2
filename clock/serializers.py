@@ -4,6 +4,8 @@ from clock.models import Clock
 from employees.serializers import EmployeeOutSerializer
 
 
+# serializers.ModelSerializer
+
 class ClockOutSerializer(serializers.ModelSerializer):
     employee = EmployeeOutSerializer()
 
@@ -34,6 +36,8 @@ class ClockInSerializer(serializers.ModelSerializer):
             })
         return data
 
+
+# serializers.Serializer
 
 # class ClockInSerializer(serializers.Serializer):
 
