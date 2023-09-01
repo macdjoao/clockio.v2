@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Clock(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    employee = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    employee = models.ForeignKey(User, on_delete=models.CASCADE)
     entry_date = models.DateTimeField()
     out_date = models.DateTimeField()
     description = models.TextField(null=True)
