@@ -12,12 +12,8 @@ from clock.serializers import ClockOutSerializer, ClockInSerializer
 
 class ClockWithIdAPIView(APIView):
 
-    def get_clock(self, id: int):
-        clock = get_object_or_404(Clock, id=id)
-        return clock
-
     def get(self, request, id: int):
-        clock = self.get_clock(id)
+        clock = get_object_or_404(Clock, id=id)
         serializer = ClockOutSerializer(instance=clock)
         return Response(serializer.data, status=HTTP_200_OK)
 
@@ -26,7 +22,7 @@ class ClockWithIdAPIView(APIView):
         pass
 
     def delete(self, request, id: int):
-        clock = self.get_clock(id)
+        clock = get_object_or_404(Clock, id=id)
         clock.delete()
         return Response({'detail': 'Clock successfully deleted'}, status=HTTP_204_NO_CONTENT)
 
